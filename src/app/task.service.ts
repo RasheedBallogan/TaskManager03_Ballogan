@@ -5,7 +5,7 @@ export interface Task {
   id: number;
   name: string;
   completed: boolean;
-  createdAt: Date;
+  createdAt: Date; // ✅ Timestamp field added
 }
 
 @Injectable({
@@ -26,7 +26,7 @@ export class TaskService {
       id: this.taskIdCounter++,
       name,
       completed: false,
-      createdAt: new Date()
+      createdAt: new Date() // ✅ Timestamp assigned
     };
     this.tasks.push(newTask);
     this.applyFilter();
@@ -60,11 +60,16 @@ export class TaskService {
 
   private applyFilter(): void {
     let filtered = this.tasks;
+
     if (this.currentFilter === 'active') {
       filtered = this.tasks.filter(t => !t.completed);
     } else if (this.currentFilter === 'completed') {
       filtered = this.tasks.filter(t => t.completed);
     }
+
+    
+    filtered = filtered.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+
     this.filteredTasksSubject.next(filtered);
   }
 }

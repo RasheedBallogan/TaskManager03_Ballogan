@@ -64,4 +64,7 @@ export class TaskListComponent implements OnInit {
   get remainingCount(): number {
     return this.taskService['tasks'].filter(t => !t.completed).length;
   }
+
 }
+
+
